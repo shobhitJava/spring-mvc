@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	
+	<!-- The bean that does the actual work -->
+	<bean id="task" class="org.krams.tutorial.job.SyncWorker" />
+	
+
+	<bean id="methodJobDetailBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+		    p:concurrent="false"
+		    p:targetObject-ref="task"
+		    p:targetMethod="work"/>
+
+	
+
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean"
+			p:jobDetail-ref="methodJobDetailBean" 
+			p:startDelay="10000"
+			p:repeatInterval="10000" />
+	
+	
+	<bean name="jobDetailBean" class="org.springframework.scheduling.quartz.JobDetailBean"
+	  		p:jobClass="org.krams.tutorial.job.CustomJob" >
+	  		<property name="jobDataAsMap">
+	  			<map>
+	  				<entry key="worker" >
+	  					<ref bean="task" />
+	  				</entry>
+	  			</map>
+	  		</property>
+	</bean>
+	
+	
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"
+	    	p:jobDetail-ref="jobDetailBean" 
+	    	p:startDelay="10000"
+	    	p:cronExpression="0/10 * * * * ?" />
+	
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+			p:waitForJobsToCompleteOnShutdown="true" >
+		    <property name="triggers">
+		        <list>
+		            <ref bean="simpleTrigger"/>
+	            	<!--<ref bean="cronTrigger" />-->
+		        </list>
+		    </property>
+	</bean>
+</beans>
