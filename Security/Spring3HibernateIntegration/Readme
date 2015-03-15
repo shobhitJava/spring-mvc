@@ -1,0 +1,12 @@
+The reference being taken from 
+http://howtodoinjava.com/2013/04/16/login-form-based-spring-3-security-example/#comment-15180
+
+Launch the following URL:
+************************
+http://localhost:8080/Spring3HibernateIntegration/login
+
+User: lokesh
+Pwd: password
+
+Note: I've developed App using JDK 1.7, if you want to use lower or higher versions
+please change pom.xml
