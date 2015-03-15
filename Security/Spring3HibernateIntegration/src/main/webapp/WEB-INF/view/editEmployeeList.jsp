@@ -39,7 +39,7 @@
      
 <h3>Employees</h3>
 <c:if  test="${!empty employeeList}">
-<table class="data">
+<table class="data" border="1">
 <tr>
     <th>Name</th>
     <th>Email</th>
